@@ -1,66 +1,100 @@
-## Foundry
+# Lending/Borrowing Protocol
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Un protocolo de préstamos y colateralización basado en WETH y USDC, utilizando Uniswap v3 TWAP como oráculo de precios.
 
-Foundry consists of:
+## Características
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- Depósito de WETH como colateral
+- Préstamos de USDC con LTV máximo del 75%
+- Sistema de liquidaciones con bonus del 5%
+- Oráculo TWAP de Uniswap v3
+- Interés fijo del 3% APR
 
-## Documentation
+## Arquitectura
 
-https://book.getfoundry.sh/
+### Contratos Principales
 
-## Usage
+- `UniswapTwapOracle.sol`: Oráculo de precios basado en TWAP de Uniswap v3
+- `LendingPool.sol`: Contrato principal de lending/borrowing
 
-### Build
+### Flujo de Usuario
 
-```shell
-$ forge build
+1. **Depósito**
+   - Usuario aprueba WETH
+   - Usuario deposita WETH como colateral
+
+2. **Préstamo**
+   - Usuario solicita préstamo en USDC
+   - Sistema verifica LTV máximo (75%)
+
+3. **Repago**
+   - Usuario repaga USDC más intereses
+   - Sistema actualiza la posición
+
+4. **Retiro**
+   - Usuario retira WETH manteniendo LTV seguro
+   - Sistema verifica health factor
+
+5. **Liquidación**
+   - Liquidador repaga deuda
+   - Recibe colateral + 5% bonus
+
+## Desarrollo
+
+### Requisitos
+
+- Foundry
+- Solidity 0.8.26
+- Node.js
+
+### Instalación
+
+```bash
+# Clonar repositorio
+git clone https://github.com/your-username/lending-protocol.git
+cd lending-protocol
+
+# Instalar dependencias
+forge install
+
+# Compilar contratos
+forge build
+
+# Ejecutar pruebas
+forge test
 ```
 
-### Test
+### Pruebas
 
-```shell
-$ forge test
+```bash
+# Ejecutar todas las pruebas
+forge test
+
+# Ejecutar pruebas con cobertura
+forge coverage
+
+# Ejecutar pruebas de fuzzing
+forge test --match-test "testFuzz"
 ```
 
-### Format
+## Seguridad
 
-```shell
-$ forge fmt
-```
+- Auditoría interna
+- Pruebas exhaustivas
+- Validaciones de precio
+- Sistema de heartbeat para el oráculo
+- Límites de cambio de precio
 
-### Gas Snapshots
+## Despliegue
 
-```shell
-$ forge snapshot
-```
+El protocolo está diseñado para ser desplegado en Arbitrum Mainnet.
 
-### Anvil
+### Direcciones de Contratos
 
-```shell
-$ anvil
-```
+- WETH: `0x82aF49447D8a07e3bd95BD0d56f35241523fBab1`
+- USDC: `0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8`
+- Uniswap V3 Pool: `0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443`
 
-### Deploy
+## Licencia
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+MIT
