@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.26;
+pragma solidity 0.8.26;
 
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -316,9 +316,6 @@ contract LendingPool is Ownable, ReentrancyGuard {
         // Transfer tokens
         usdc.safeTransferFrom(msg.sender, address(this), debtToRepay);
         weth.safeTransfer(msg.sender, collateralToSeize);
-        
-        // Update liquidation status
-        updateLiquidationStatus(user);
         
         emit Liquidate(user, msg.sender, collateralToSeize, debtToRepay);
         emit PositionUpdated(user, position.collateral, position.debt);

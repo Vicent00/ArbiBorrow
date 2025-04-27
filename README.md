@@ -1,100 +1,74 @@
 # Lending/Borrowing Protocol
 
-Un protocolo de préstamos y colateralización basado en WETH y USDC, utilizando Uniswap v3 TWAP como oráculo de precios.
+A lending and collateralization protocol based on WETH and USDC, using Uniswap v3 TWAP as a price oracle.
 
-## Características
+## Features
 
-- Depósito de WETH como colateral
-- Préstamos de USDC con LTV máximo del 75%
-- Sistema de liquidaciones con bonus del 5%
-- Oráculo TWAP de Uniswap v3
-- Interés fijo del 3% APR
+- WETH deposits as collateral
+- USDC loans with maximum 75% LTV
+- Liquidation system with 5% bonus
+- Uniswap v3 TWAP oracle
+- Fixed 3% APR interest rate
 
-## Arquitectura
+## Architecture
 
-### Contratos Principales
+### Main Contracts
 
-- `UniswapTwapOracle.sol`: Oráculo de precios basado en TWAP de Uniswap v3
-- `LendingPool.sol`: Contrato principal de lending/borrowing
+- `UniswapTwapOracle.sol`: Price oracle based on Uniswap v3 TWAP
+- `LendingPool.sol`: Main lending/borrowing contract
 
-### Flujo de Usuario
+### User Flow
 
-1. **Depósito**
-   - Usuario aprueba WETH
-   - Usuario deposita WETH como colateral
+1. **Deposit**
+   - User approves WETH
+   - User deposits WETH as collateral
 
-2. **Préstamo**
-   - Usuario solicita préstamo en USDC
-   - Sistema verifica LTV máximo (75%)
+2. **Borrow**
+   - User requests USDC loan
+   - System verifies maximum LTV (75%)
 
-3. **Repago**
-   - Usuario repaga USDC más intereses
-   - Sistema actualiza la posición
+3. **Repayment**
+   - User repays USDC plus interest
+   - System updates position
 
-4. **Retiro**
-   - Usuario retira WETH manteniendo LTV seguro
-   - Sistema verifica health factor
+4. **Withdraw**
+   - User withdraws WETH while maintaining safe LTV
+   - System verifies health factor
 
-5. **Liquidación**
-   - Liquidador repaga deuda
-   - Recibe colateral + 5% bonus
+5. **Liquidation**
+   - Liquidator repays debt
+   - Receives collateral + 5% bonus
 
-## Desarrollo
+## Development
 
-### Requisitos
+### Requirements
 
 - Foundry
 - Solidity 0.8.26
 - Node.js
 
-### Instalación
+### Installation
 
 ```bash
-# Clonar repositorio
+# Clone repository
 git clone https://github.com/your-username/lending-protocol.git
 cd lending-protocol
 
-# Instalar dependencias
+# Install dependencies
 forge install
 
-# Compilar contratos
+# Compile contracts
 forge build
-
-# Ejecutar pruebas
-forge test
 ```
 
-### Pruebas
+## Security
 
-```bash
-# Ejecutar todas las pruebas
-forge test
+- Internal audit
+- Comprehensive testing
+- Price validations
+- Oracle heartbeat system
+- Price change limits
 
-# Ejecutar pruebas con cobertura
-forge coverage
-
-# Ejecutar pruebas de fuzzing
-forge test --match-test "testFuzz"
-```
-
-## Seguridad
-
-- Auditoría interna
-- Pruebas exhaustivas
-- Validaciones de precio
-- Sistema de heartbeat para el oráculo
-- Límites de cambio de precio
-
-## Despliegue
-
-El protocolo está diseñado para ser desplegado en Arbitrum Mainnet.
-
-### Direcciones de Contratos
-
-- WETH: `0x82aF49447D8a07e3bd95BD0d56f35241523fBab1`
-- USDC: `0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8`
-- Uniswap V3 Pool: `0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443`
-
-## Licencia
+## License
 
 MIT
